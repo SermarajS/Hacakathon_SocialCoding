@@ -5,7 +5,7 @@ System.out.println("Base URL: "+baseURL);
 %>
 
 <%!
-    public String getBaseUrl(jakarta.servlet.http.HttpServletRequest request) {
+    public String getBaseUrl(javax.servlet.http.HttpServletRequest request) {
         String scheme = request.getScheme(); // http or https
         String serverName = request.getServerName(); // hostname
         int serverPort = request.getServerPort(); // port
