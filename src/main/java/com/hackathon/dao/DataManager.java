@@ -41,8 +41,11 @@ public class DataManager {
 		System.out.println(baseDAO.BaseDAOTest());
 		ListTablesResponse response = null;
         ListTablesRequest request = ListTablesRequest.builder().build();
+        System.out.println("ListTablesRequest "+request);
         response = ddb.listTables(request);
+        System.out.println("ListTablesResponse "+response);
         List tNames=response.tableNames();
+        System.out.println("tNames "+tNames);
         for(Object tname : tNames) {
         	System.out.println("TNAME: ");
         	System.out.println(tname.getClass());
