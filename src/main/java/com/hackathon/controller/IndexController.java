@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.hackathon.dao.DataManager;
-
 @Controller
 public class IndexController {
 	
@@ -45,8 +43,8 @@ public class IndexController {
     @RequestMapping("/helloWorld")
     public String helloWorld() {
     	System.out.println("Helloworld");
-    	DataManager dm = new DataManager();
-    	dm.DataManagerTest();
+    	//DataManager dm = new DataManager();
+    	//dm.DataManagerTest();
     	return "HelloWorld";
     }
     
