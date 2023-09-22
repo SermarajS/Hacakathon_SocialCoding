@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
+
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -40,10 +45,12 @@ public class DataManager {
             .region(region)
             .build();
 	
+	static DynamoDB dynamoDB = new DynamoDB(new AmazonDynamoDBClient(new ProfileCredentialsProvider()));
 	
 	public void DataManagerTest() {
 		baseDAO = new BaseDAO();
 		System.out.println(baseDAO.BaseDAOTest());
+		retrieve();
 		GetObject();
 		ListTablesResponse response = null;
         ListTablesRequest request = ListTablesRequest.builder().build();
@@ -56,10 +63,13 @@ public class DataManager {
         	System.out.println("TNAME: ");
         	System.out.println(tname.getClass());
         }
+        
 	}
 
     public List<String> GetObject(){
 //    	return "Hello S3";
+    	System.out.println("GetObject");
+    	
     	ListObjectsRequest listObjects = ListObjectsRequest
                 .builder()
                 .bucket(bucketName)
@@ -70,8 +80,22 @@ public class DataManager {
             List<String> objectsStr = new ArrayList<String>();
             for (S3Object myValue : objects) {
             	objectsStr.add(myValue.key());
+            	System.out.println("GO->"+myValue.key());
             }
             return objectsStr;
+    }
+    
+    public void retrieve() {
+    	System.out.println("RETRIEVE");
+    	Table tableName = dynamoDB.getTable("SocialCoding-DB");
+    	try {
+    		Item item = tableName.getItem("UserId","Admin001@gmail.com");
+    		System.out.println("Before");
+    		System.out.println(item.toJSONPretty());
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    
     }
 	
 }
