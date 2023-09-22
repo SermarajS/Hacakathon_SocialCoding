@@ -90,6 +90,7 @@ public class DataManager {
     public void retrieve() {
     	System.out.println("RETRIEVEE");
     	Table tableName = dynamoDB.getTable("SocialCoding-DB");
+    	System.out.println("tablename "+tableName);
     	try {
     		Item item = tableName.getItem("UserId","Admin001@gmail.com");
     		System.out.println("Before");
