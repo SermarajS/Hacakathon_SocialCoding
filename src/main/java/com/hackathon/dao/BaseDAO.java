@@ -10,7 +10,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 public class BaseDAO {
 	
 	Region region = Region.US_EAST_1;
-    String bucketName = "citi-hackathon-test-647859";
+    String bucketName = "citi-hackathon-test-82946892";
     
    // ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
     S3Client s3 = S3Client.builder()
@@ -30,7 +30,8 @@ public class BaseDAO {
             .build();
 	
 	public String BaseDAOTest() {
-		return "From BaseDAO";
+		return "From BaseDAOoo";
 	}
+	
 
 }
