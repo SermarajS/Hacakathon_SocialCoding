@@ -1,7 +1,10 @@
 package com.hackathon.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -11,8 +14,12 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
+import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.ListTablesRequest;
 import software.amazon.awssdk.services.dynamodb.model.ListTablesResponse;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -52,8 +59,9 @@ public class DataManager {
 	public void DataManagerTest() {
 		baseDAO = new BaseDAO();
 		System.out.println(baseDAO.BaseDAOTest());
-		retrieve();
-		GetObject();
+		scanItem();
+		//retrieve();
+		//GetObject();
 		ListTablesResponse response = null;
         ListTablesRequest request = ListTablesRequest.builder().build();
         System.out.println("ListTablesRequest "+request);
@@ -100,5 +108,45 @@ public class DataManager {
     	}
     
     }
-	
+    
+    public void scanItem() {
+    	System.out.println("SCANITEM");
+    	ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
+        Region region = Region.US_EAST_1;
+        DynamoDbClient ddb = DynamoDbClient.builder()
+            .credentialsProvider(credentialsProvider)
+            .region(region)
+            .build();
+        String key="UserID";
+        String keyVal="Password";
+        
+        HashMap<String,AttributeValue> keyToGet = new HashMap<>();
+        keyToGet.put(key, AttributeValue.builder()
+            .s(keyVal)
+            .build());
+
+        GetItemRequest request = GetItemRequest.builder()
+            .key(keyToGet)
+            .tableName(tableName)
+            .build();
+
+        try {
+            // If there is no matching item, GetItem does not return any data.
+            Map<String,AttributeValue> returnedItem = ddb.getItem(request).item();
+            if (returnedItem.isEmpty())
+                System.out.format("No item found with the key %s!\n", key);
+            else {
+                Set<String> keys = returnedItem.keySet();
+                System.out.println("Amazon DynamoDB table attributes: \n");
+                for (String key1 : keys) {
+                    System.out.format("%s: %s\n", key1, returnedItem.get(key1).toString());
+                }
+            }
+
+        } catch (DynamoDbException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+    
+    }
 }
