@@ -37,6 +37,7 @@ public class IndexController {
     
     @RequestMapping("/helloWorld")
     public ModelAndView helloWorld() {
+    	System.out.println("Helloworld");
     	DataManager dm = new DataManager();
     	dm.DataManagerTest();
     	return new ModelAndView("HelloWorld");
