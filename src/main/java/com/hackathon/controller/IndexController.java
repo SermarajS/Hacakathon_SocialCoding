@@ -43,11 +43,11 @@ public class IndexController {
     }
     
     @RequestMapping("/helloWorld")
-    public ModelAndView helloWorld() {
+    public String helloWorld() {
     	System.out.println("Helloworld");
     	DataManager dm = new DataManager();
     	dm.DataManagerTest();
-    	return new ModelAndView("HelloWorld");
+    	return "HelloWorld";
     }
     
     @RequestMapping(value="/SocialCoding/ForgotPassword")
