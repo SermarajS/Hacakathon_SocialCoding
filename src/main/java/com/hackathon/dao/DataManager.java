@@ -113,10 +113,11 @@ public class DataManager {
     	System.out.println("SCANITEM");
     	ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
         Region region = Region.US_EAST_1;
-        DynamoDbClient ddb = DynamoDbClient.builder()
-            .credentialsProvider(credentialsProvider)
-            .region(region)
-            .build();
+       // DynamoDbClient ddb = DynamoDbClient.builder()
+       //     .credentialsProvider(credentialsProvider)
+       //     .region(region)
+       //     .build();
+        DynamoDbClient ddb=DynamoDbClient.builder().region(region).build();
         String key="UserID";
         String keyVal="Password";
         
