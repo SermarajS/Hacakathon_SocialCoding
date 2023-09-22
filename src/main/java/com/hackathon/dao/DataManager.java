@@ -29,7 +29,7 @@ public class DataManager {
       //  .credentialsProvider(credentialsProvider)
         .build();
     
-    String tableName = "SocialCodingSA_DB";
+    String tableName = "SocialCoding-DB";
     String partitionAlias = "#a";
     String partitionKeyName = "Artist";
     String partitionKeyVal = "AWS Band";
