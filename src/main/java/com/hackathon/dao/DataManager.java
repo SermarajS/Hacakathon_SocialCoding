@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
@@ -45,7 +45,9 @@ public class DataManager {
             .region(region)
             .build();
 	
-	static DynamoDB dynamoDB = new DynamoDB(new AmazonDynamoDBClient(new ProfileCredentialsProvider()));
+	//static DynamoDB dynamoDB = new DynamoDB(new AmazonDynamoDBClient(new ProfileCredentialsProvider()));
+	AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+	DynamoDB dynamoDB = new DynamoDB(client);
 	
 	public void DataManagerTest() {
 		baseDAO = new BaseDAO();
@@ -86,7 +88,7 @@ public class DataManager {
     }
     
     public void retrieve() {
-    	System.out.println("RETRIEVE");
+    	System.out.println("RETRIEVEE");
     	Table tableName = dynamoDB.getTable("SocialCoding-DB");
     	try {
     		Item item = tableName.getItem("UserId","Admin001@gmail.com");
