@@ -1,14 +1,19 @@
 package com.hackathon.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.ListTablesRequest;
 import software.amazon.awssdk.services.dynamodb.model.ListTablesResponse;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
+import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 @Component
 public class DataManager {
@@ -39,6 +44,7 @@ public class DataManager {
 	public void DataManagerTest() {
 		baseDAO = new BaseDAO();
 		System.out.println(baseDAO.BaseDAOTest());
+		GetObject();
 		ListTablesResponse response = null;
         ListTablesRequest request = ListTablesRequest.builder().build();
         System.out.println("ListTablesRequest "+request);
@@ -51,5 +57,21 @@ public class DataManager {
         	System.out.println(tname.getClass());
         }
 	}
+
+    public List<String> GetObject(){
+//    	return "Hello S3";
+    	ListObjectsRequest listObjects = ListObjectsRequest
+                .builder()
+                .bucket(bucketName)
+                .build();
+
+            ListObjectsResponse res = s3.listObjects(listObjects);
+            List<S3Object> objects = res.contents();
+            List<String> objectsStr = new ArrayList<String>();
+            for (S3Object myValue : objects) {
+            	objectsStr.add(myValue.key());
+            }
+            return objectsStr;
+    }
 	
 }
